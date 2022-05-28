@@ -1,11 +1,12 @@
 package com.acme.dbo.txlog;
 
 import com.acme.dbo.txlog.message.*;
+import com.acme.dbo.txlog.printer.ConsoleSaver;
 import com.acme.dbo.txlog.service.LogService;
 
 public class Facade {
 
-    public static LogService logService = new LogService();
+    public static LogService logService = new LogService(new ConsoleSaver());
 
     public static void log(int message) {
         logService.log(new IntMessage(message));
@@ -32,7 +33,7 @@ public class Facade {
     }
 
     public static void flush() {
-        logService.flush();
+        logService.log(new EmptyMessage());
     }
 
 }

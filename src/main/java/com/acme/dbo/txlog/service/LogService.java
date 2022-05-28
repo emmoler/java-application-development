@@ -1,31 +1,25 @@
 package com.acme.dbo.txlog.service;
 
+import com.acme.dbo.txlog.message.EmptyMessage;
 import com.acme.dbo.txlog.message.Message;
-import com.acme.dbo.txlog.printer.ConsolePrinter;
+import com.acme.dbo.txlog.printer.Saver;
 
 public class LogService {
 
-    private Message previousMessage = null;
-    private LoggerState loggerState = LoggerState.NA;
+    private Message lastMessage = new EmptyMessage();
+    private Saver saver;
 
-    private final ConsolePrinter printer = new ConsolePrinter();
-
-    public void log(Message message) {
-
-        if (loggerState != LoggerState.NA && previousMessage.canAccumulate(message)) {
-            previousMessage.accumulate(message);
-        }
-        else
-        {
-            flush();
-            previousMessage = message;
-            loggerState = previousMessage.getState();
-        }
+    public LogService (Saver saver) {
+        this.saver = saver;
     }
 
-    public void flush() {
-        if (loggerState != LoggerState.NA)
-            printer.print(previousMessage.getDecoratedContent());
-        loggerState = LoggerState.NA;
+    public void log(Message message) {
+        if (lastMessage.canAccumulate(message)) {
+            lastMessage.accumulate(message);
+        }
+        else {
+            saver.save(lastMessage.getDecoratedContent());
+            lastMessage = message;
+        }
     }
 }

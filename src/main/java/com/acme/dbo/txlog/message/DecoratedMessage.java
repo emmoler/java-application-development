@@ -1,6 +1,5 @@
 package com.acme.dbo.txlog.message;
 
-import com.acme.dbo.txlog.printer.ConsolePrinter;
 import com.acme.dbo.txlog.service.LoggerState;
 
 import static java.lang.System.lineSeparator;
@@ -14,7 +13,10 @@ public class DecoratedMessage implements Message {
     }
 
     public String getDecoratedContent() {
-        return MESSAGE_PREFIX + getContent() + lineSeparator();
+        if (!getContent().isEmpty())
+            return MESSAGE_PREFIX + getContent() + lineSeparator();
+        else
+            return "";
     }
 
     public LoggerState getState() {
