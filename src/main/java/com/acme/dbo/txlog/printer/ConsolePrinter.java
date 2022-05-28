@@ -1,8 +1,8 @@
 package com.acme.dbo.txlog.printer;
 
-public class ConsolePrinter {
+public class ConsolePrinter implements Printer {
 
-    public static void print(String message) {
+    public void print(String message) {
         System.out.print(message);
     }
 }
