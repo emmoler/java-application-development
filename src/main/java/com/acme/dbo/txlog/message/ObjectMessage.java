@@ -1,7 +1,5 @@
 package com.acme.dbo.txlog.message;
 
-import com.acme.dbo.txlog.service.LoggerState;
-
 public class ObjectMessage extends DecoratedMessage {
 
     private static final String MESSAGE_PREFIX = "reference: ";
@@ -18,7 +16,7 @@ public class ObjectMessage extends DecoratedMessage {
     }
 
     @Override
-    public LoggerState getState() {
-        return LoggerState.OBJ;
+    public MessageType getMessageType() {
+        return MessageType.OBJ;
     }
 }

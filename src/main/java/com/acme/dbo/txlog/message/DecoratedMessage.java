@@ -1,7 +1,5 @@
 package com.acme.dbo.txlog.message;
 
-import com.acme.dbo.txlog.service.LoggerState;
-
 import static java.lang.System.lineSeparator;
 
 public class DecoratedMessage implements Message {
@@ -19,8 +17,8 @@ public class DecoratedMessage implements Message {
             return "";
     }
 
-    public LoggerState getState() {
-        return LoggerState.NA;
+    public MessageType getMessageType() {
+        return MessageType.NA;
     }
 
 
@@ -29,7 +27,7 @@ public class DecoratedMessage implements Message {
     }
 
 
-    public boolean canAccumulate(Message m) {
+    public boolean canAccumulate(Message message) {
         return false;
     }
 

@@ -1,7 +1,5 @@
 package com.acme.dbo.txlog.message;
 
-import com.acme.dbo.txlog.service.LoggerState;
-
 public class EmptyMessage extends DecoratedMessage {
 
     public EmptyMessage() {
@@ -9,8 +7,8 @@ public class EmptyMessage extends DecoratedMessage {
     }
 
     @Override
-    public LoggerState getState() {
-        return LoggerState.NA;
+    public MessageType getMessageType() {
+        return MessageType.NA;
     }
 
     @Override
@@ -19,7 +17,7 @@ public class EmptyMessage extends DecoratedMessage {
     }
 
     @Override
-    public boolean canAccumulate(Message m) {
+    public boolean canAccumulate(Message message) {
         return false;
     }
 }

@@ -1,7 +1,5 @@
 package com.acme.dbo.txlog.message;
 
-import com.acme.dbo.txlog.service.LoggerState;
-
 public class CharMessage extends DecoratedMessage {
 
     private static final String MESSAGE_PREFIX = "char: ";
@@ -13,8 +11,8 @@ public class CharMessage extends DecoratedMessage {
     }
 
     @Override
-    public LoggerState getState() {
-        return LoggerState.CHAR;
+    public MessageType getMessageType() {
+        return MessageType.CHAR;
     }
 
     @Override
@@ -23,7 +21,7 @@ public class CharMessage extends DecoratedMessage {
     }
 
     @Override
-    public boolean canAccumulate(Message m) {
+    public boolean canAccumulate(Message message) {
         return false;
     }
 }

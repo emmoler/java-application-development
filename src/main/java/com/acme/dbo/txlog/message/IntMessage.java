@@ -1,7 +1,5 @@
 package com.acme.dbo.txlog.message;
 
-import com.acme.dbo.txlog.service.LoggerState;
-
 import static java.lang.System.lineSeparator;
 
 public class IntMessage extends DecoratedMessage{
@@ -15,8 +13,8 @@ public class IntMessage extends DecoratedMessage{
     }
 
     @Override
-    public LoggerState getState() {
-        return LoggerState.INT;
+    public MessageType getMessageType() {
+        return MessageType.INT;
     }
 
     @Override
@@ -41,10 +39,10 @@ public class IntMessage extends DecoratedMessage{
     }
 
     @Override
-    public boolean canAccumulate(Message m) {
-        if (getState() == m.getState())
+    public boolean canAccumulate(Message message) {
+        if (getMessageType() == message.getMessageType())
         {
-            int newNumber = Integer.parseInt(m.getContent());
+            int newNumber = Integer.parseInt(message.getContent());
             if (ACCUMULATOR > 0 && newNumber > Integer.MAX_VALUE - ACCUMULATOR) {
                 return false;
             } else if (ACCUMULATOR < 0 && newNumber < Integer.MIN_VALUE - ACCUMULATOR) {

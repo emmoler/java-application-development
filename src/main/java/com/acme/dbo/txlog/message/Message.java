@@ -1,11 +1,9 @@
 package com.acme.dbo.txlog.message;
 
-import com.acme.dbo.txlog.service.LoggerState;
-
 public interface Message {
-    LoggerState getState();
+    MessageType getMessageType();
     String getContent();
-    boolean canAccumulate(Message m);
+    boolean canAccumulate(Message message);
     void accumulate(Message message);
     String getDecoratedContent();
 }
