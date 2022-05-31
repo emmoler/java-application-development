@@ -1,38 +1,30 @@
 package com.acme.dbo.txlog.message;
 
-import static java.lang.System.lineSeparator;
+public abstract class DecoratedMessage implements Message {
 
-public class DecoratedMessage implements Message {
+    private final String messagePrefix;
+    protected String stringMessageContent;
+    protected MessageType messageType;
 
-    private String MESSAGE_PREFIX;
+    public DecoratedMessage(String prefixMessage, MessageType messageType) {
+        messagePrefix = prefixMessage;
+        this.messageType = messageType;
+    }
 
-    public DecoratedMessage(String prefixMessage) {
-        MESSAGE_PREFIX = prefixMessage;
+    protected String decorate(String content) {
+        return messagePrefix + content;
     }
 
     public String getDecoratedContent() {
-        if (!getContent().isEmpty())
-            return MESSAGE_PREFIX + getContent() + lineSeparator();
-        else
-            return "";
+        return getMessageType() != MessageType.NA ? decorate(getContent()) : "";
     }
 
     public MessageType getMessageType() {
-        return MessageType.NA;
+        return messageType;
     }
-
 
     public String getContent() {
-        throw new java.lang.UnsupportedOperationException("Not supported");
+        return String.valueOf(stringMessageContent);
     }
 
-
-    public boolean canAccumulate(Message message) {
-        return false;
-    }
-
-
-    public void accumulate(Message message) {
-        throw new java.lang.UnsupportedOperationException("Not supported");
-    }
 }

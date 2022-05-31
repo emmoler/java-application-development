@@ -1,51 +1,47 @@
 package com.acme.dbo.txlog.message;
 
-import static java.lang.System.lineSeparator;
-
 public class IntMessage extends DecoratedMessage{
 
     private static final String MESSAGE_PREFIX = "primitive: ";
-    private int ACCUMULATOR = 0;
+    private static final String OVERFLOW_UPPER_BOUND_MESSAGE = "Integer.MAX_VALUE";
+    private static final String OVERFLOW_LOWER_BOUND_MESSAGE = "Integer.MIN_VALUE";
+
+    private int accumulator = 0;
 
     public IntMessage(int message) {
-        super(MESSAGE_PREFIX);
-        ACCUMULATOR = message;
-    }
-
-    @Override
-    public MessageType getMessageType() {
-        return MessageType.INT;
+        super(MESSAGE_PREFIX, MessageType.INT);
+        accumulator = message;
     }
 
     @Override
     public String getContent() {
-                return String.valueOf(ACCUMULATOR);
+        return String.valueOf(accumulator);
     }
 
     @Override
     public String getDecoratedContent() {
         String retVal;
-        switch (ACCUMULATOR) {
+        switch (accumulator) {
             case Integer.MAX_VALUE:
-                retVal = "Integer.MAX_VALUE";
+                retVal = OVERFLOW_UPPER_BOUND_MESSAGE;
                 break;
             case Integer.MIN_VALUE:
-                retVal = "Integer.MIN_VALUE";
+                retVal = OVERFLOW_LOWER_BOUND_MESSAGE;
                 break;
             default :
-                retVal = String.valueOf(ACCUMULATOR);
+                retVal = String.valueOf(accumulator);
         }
-        return MESSAGE_PREFIX + retVal + lineSeparator();
+        return decorate(retVal);
     }
 
     @Override
-    public boolean canAccumulate(Message message) {
+    public boolean isAccumulatable(Message message) {
         if (getMessageType() == message.getMessageType())
         {
             int newNumber = Integer.parseInt(message.getContent());
-            if (ACCUMULATOR > 0 && newNumber > Integer.MAX_VALUE - ACCUMULATOR) {
+            if (accumulator > 0 && newNumber > Integer.MAX_VALUE - accumulator) {
                 return false;
-            } else if (ACCUMULATOR < 0 && newNumber < Integer.MIN_VALUE - ACCUMULATOR) {
+            } else if (accumulator < 0 && newNumber < Integer.MIN_VALUE - accumulator) {
                 return false;
             }
             else
@@ -57,7 +53,8 @@ public class IntMessage extends DecoratedMessage{
     }
 
     @Override
-    public void accumulate(Message message) {
-        ACCUMULATOR += Integer.parseInt(message.getContent());
+    public Message accumulate(Message message) {
+        accumulator += Integer.parseInt(message.getContent());
+        return new IntMessage(accumulator);
     }
 }

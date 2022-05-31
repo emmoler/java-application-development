@@ -1,20 +1,16 @@
 package com.acme.dbo.txlog.message;
 
-import static java.lang.System.lineSeparator;
-
 public class ByteMessage extends DecoratedMessage {
 
     private static final String MESSAGE_PREFIX = "primitive: ";
+    private static final String OVERFLOW_UPPER_BOUND_MESSAGE = "Byte.MAX_VALUE";
+    private static final String OVERFLOW_LOWER_BOUND_MESSAGE = "Byte.MIN_VALUE";
+
     private int ACCUMULATOR = 0;
 
     public ByteMessage(byte message) {
-        super(MESSAGE_PREFIX);
+        super(MESSAGE_PREFIX, MessageType.BYTE);
         ACCUMULATOR = message;
-    }
-
-    @Override
-    public MessageType getMessageType() {
-        return MessageType.BYTE;
     }
 
     @Override
@@ -23,23 +19,29 @@ public class ByteMessage extends DecoratedMessage {
     }
 
     @Override
+    public boolean isAccumulatable(Message message) {
+        return false;
+    }
+
+    @Override
+    public Message accumulate(Message message) {
+
+        return message;
+    }
+
+    @Override
     public String getDecoratedContent() {
         String retVal;
         switch (ACCUMULATOR) {
             case Byte.MAX_VALUE:
-                retVal = "Byte.MAX_VALUE";
+                retVal = OVERFLOW_UPPER_BOUND_MESSAGE;
                 break;
             case Byte.MIN_VALUE:
-                retVal = "Byte.MIN_VALUE";
+                retVal = OVERFLOW_LOWER_BOUND_MESSAGE;
                 break;
             default :
                 retVal = String.valueOf(ACCUMULATOR);
         }
-        return MESSAGE_PREFIX + retVal + lineSeparator();
-    }
-
-    @Override
-    public boolean canAccumulate(Message message) {
-        return false;
+        return decorate(retVal);
     }
 }
