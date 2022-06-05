@@ -5,8 +5,7 @@ public class CharMessage extends DecoratedMessage {
     private static final String MESSAGE_PREFIX = "char: ";
 
     public CharMessage(char message) {
-        super(MESSAGE_PREFIX, MessageType.CHAR);
-        super.stringMessageContent = String.valueOf(message);
+        super(MESSAGE_PREFIX, String.valueOf(message));
     }
 
     @Override

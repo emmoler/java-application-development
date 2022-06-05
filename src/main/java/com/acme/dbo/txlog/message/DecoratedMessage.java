@@ -3,12 +3,11 @@ package com.acme.dbo.txlog.message;
 public abstract class DecoratedMessage implements Message {
 
     private final String messagePrefix;
-    protected String stringMessageContent;
-    protected MessageType messageType;
+    private final String stringMessageContent;
 
-    public DecoratedMessage(String prefixMessage, MessageType messageType) {
+    public DecoratedMessage(String prefixMessage, String stringMessageContent) {
         messagePrefix = prefixMessage;
-        this.messageType = messageType;
+        this.stringMessageContent = stringMessageContent;
     }
 
     protected String decorate(String content) {
@@ -16,15 +15,10 @@ public abstract class DecoratedMessage implements Message {
     }
 
     public String getDecoratedContent() {
-        return getMessageType() != MessageType.NA ? decorate(getContent()) : "";
-    }
-
-    public MessageType getMessageType() {
-        return messageType;
+        return decorate(getContent());
     }
 
     public String getContent() {
         return String.valueOf(stringMessageContent);
     }
-
 }

@@ -3,7 +3,7 @@ package com.acme.dbo.txlog.message;
 public class EmptyMessage extends DecoratedMessage {
 
     public EmptyMessage() {
-        super(null, MessageType.NA);
+        super(null, null);
     }
 
     @Override
@@ -14,5 +14,10 @@ public class EmptyMessage extends DecoratedMessage {
     @Override
     public Message accumulate(Message message) {
         throw new java.lang.UnsupportedOperationException("Not supported");
+    }
+
+    @Override
+    public String getDecoratedContent() {
+        return "";
     }
 }

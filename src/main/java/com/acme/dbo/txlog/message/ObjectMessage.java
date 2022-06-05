@@ -5,8 +5,7 @@ public class ObjectMessage extends DecoratedMessage {
     private static final String MESSAGE_PREFIX = "reference: ";
 
     public ObjectMessage(Object message) {
-        super(MESSAGE_PREFIX, MessageType.OBJ);
-        stringMessageContent = String.valueOf(message);
+        super(MESSAGE_PREFIX, String.valueOf(message));
     }
 
     @Override

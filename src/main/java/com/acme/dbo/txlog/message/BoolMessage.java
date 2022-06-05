@@ -5,8 +5,7 @@ public class BoolMessage extends DecoratedMessage{
     private static final String MESSAGE_PREFIX = "primitive: ";
 
     public BoolMessage(boolean message) {
-        super(MESSAGE_PREFIX, MessageType.BOOL);
-        stringMessageContent = String.valueOf(message);
+        super(MESSAGE_PREFIX, String.valueOf(message));
     }
 
     @Override

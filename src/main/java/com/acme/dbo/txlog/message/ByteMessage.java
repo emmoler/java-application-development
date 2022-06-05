@@ -6,16 +6,16 @@ public class ByteMessage extends DecoratedMessage {
     private static final String OVERFLOW_UPPER_BOUND_MESSAGE = "Byte.MAX_VALUE";
     private static final String OVERFLOW_LOWER_BOUND_MESSAGE = "Byte.MIN_VALUE";
 
-    private int ACCUMULATOR = 0;
+    private int accumulator = 0;
 
     public ByteMessage(byte message) {
-        super(MESSAGE_PREFIX, MessageType.BYTE);
-        ACCUMULATOR = message;
+        super(MESSAGE_PREFIX, String.valueOf(message));
+        accumulator = message;
     }
 
     @Override
     public String getContent() {
-        return String.valueOf(ACCUMULATOR);
+        return String.valueOf(accumulator);
     }
 
     @Override
@@ -25,23 +25,22 @@ public class ByteMessage extends DecoratedMessage {
 
     @Override
     public Message accumulate(Message message) {
+        throw new java.lang.UnsupportedOperationException("Not supported");
+    }
 
-        return message;
+    private String getOverflownAccumulator() {
+        switch (accumulator) {
+            case Byte.MAX_VALUE:
+                return OVERFLOW_UPPER_BOUND_MESSAGE;
+            case Byte.MIN_VALUE:
+                return OVERFLOW_LOWER_BOUND_MESSAGE;
+            default :
+                return String.valueOf(accumulator);
+        }
     }
 
     @Override
     public String getDecoratedContent() {
-        String retVal;
-        switch (ACCUMULATOR) {
-            case Byte.MAX_VALUE:
-                retVal = OVERFLOW_UPPER_BOUND_MESSAGE;
-                break;
-            case Byte.MIN_VALUE:
-                retVal = OVERFLOW_LOWER_BOUND_MESSAGE;
-                break;
-            default :
-                retVal = String.valueOf(ACCUMULATOR);
-        }
-        return decorate(retVal);
+        return decorate(getOverflownAccumulator());
     }
 }

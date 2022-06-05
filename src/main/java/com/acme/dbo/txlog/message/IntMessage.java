@@ -6,10 +6,10 @@ public class IntMessage extends DecoratedMessage{
     private static final String OVERFLOW_UPPER_BOUND_MESSAGE = "Integer.MAX_VALUE";
     private static final String OVERFLOW_LOWER_BOUND_MESSAGE = "Integer.MIN_VALUE";
 
-    private int accumulator = 0;
+    private final int accumulator;
 
     public IntMessage(int message) {
-        super(MESSAGE_PREFIX, MessageType.INT);
+        super(MESSAGE_PREFIX, String.valueOf(message));
         accumulator = message;
     }
 
@@ -18,27 +18,27 @@ public class IntMessage extends DecoratedMessage{
         return String.valueOf(accumulator);
     }
 
-    @Override
-    public String getDecoratedContent() {
-        String retVal;
+    private String getOverflownAccumulator() {
         switch (accumulator) {
             case Integer.MAX_VALUE:
-                retVal = OVERFLOW_UPPER_BOUND_MESSAGE;
-                break;
+                return OVERFLOW_UPPER_BOUND_MESSAGE;
             case Integer.MIN_VALUE:
-                retVal = OVERFLOW_LOWER_BOUND_MESSAGE;
-                break;
+                return OVERFLOW_LOWER_BOUND_MESSAGE;
             default :
-                retVal = String.valueOf(accumulator);
+                return String.valueOf(accumulator);
         }
-        return decorate(retVal);
+    }
+
+    @Override
+    public String getDecoratedContent() {
+        return decorate(getOverflownAccumulator());
     }
 
     @Override
     public boolean isAccumulatable(Message message) {
-        if (getMessageType() == message.getMessageType())
+        if (message instanceof IntMessage)
         {
-            int newNumber = Integer.parseInt(message.getContent());
+            int newNumber = ((IntMessage)message).accumulator;
             if (accumulator > 0 && newNumber > Integer.MAX_VALUE - accumulator) {
                 return false;
             } else if (accumulator < 0 && newNumber < Integer.MIN_VALUE - accumulator) {
@@ -54,7 +54,6 @@ public class IntMessage extends DecoratedMessage{
 
     @Override
     public Message accumulate(Message message) {
-        accumulator += Integer.parseInt(message.getContent());
-        return new IntMessage(accumulator);
+        return new IntMessage(accumulator + ((IntMessage)message).accumulator);
     }
 }
