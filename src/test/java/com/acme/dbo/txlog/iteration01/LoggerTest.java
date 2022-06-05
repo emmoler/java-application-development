@@ -2,6 +2,7 @@ package com.acme.dbo.txlog.iteration01;
 
 import com.acme.dbo.txlog.Facade;
 import com.acme.dbo.txlog.SysoutCaptureAndAssertionAbility;
+import com.acme.dbo.txlog.service.LogOperationException;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -9,6 +10,7 @@ import org.junit.Test;
 import java.io.IOException;
 
 import static java.lang.System.lineSeparator;
+import static org.junit.Assert.assertTrue;
 
 public class LoggerTest implements SysoutCaptureAndAssertionAbility {
     //region given

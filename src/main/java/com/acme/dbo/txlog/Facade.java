@@ -1,12 +1,16 @@
 package com.acme.dbo.txlog;
 
 import com.acme.dbo.txlog.message.*;
-import com.acme.dbo.txlog.printer.ConsoleSaver;
+import com.acme.dbo.txlog.saver.ConsoleSaver;
 import com.acme.dbo.txlog.service.LogService;
 
 public class Facade {
 
     public static LogService logService = new LogService(new ConsoleSaver());
+
+    public Facade() {
+        throw new IllegalStateException("Facade");
+    }
 
     public static void log(int message) {
         logService.log(new IntMessage(message));

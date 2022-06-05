@@ -2,7 +2,8 @@ package com.acme.dbo.txlog.service;
 
 import com.acme.dbo.txlog.message.EmptyMessage;
 import com.acme.dbo.txlog.message.Message;
-import com.acme.dbo.txlog.printer.Saver;
+import com.acme.dbo.txlog.saver.Saver;
+import com.acme.dbo.txlog.saver.SaverException;
 
 public class LogService {
 
@@ -13,12 +14,17 @@ public class LogService {
         this.saver = saver;
     }
 
-    public void log(Message message) {
+    public void log(Message message) throws LogOperationException {
         if (lastMessage.isAccumulatable(message)) {
             lastMessage = lastMessage.accumulate(message);
         }
         else {
-            saver.save(lastMessage.getDecoratedContent());
+            try {
+                saver.save(lastMessage.getDecoratedContent());
+            }
+            catch (SaverException e){
+                throw new LogOperationException(e.getMessage(), e);
+            }
             lastMessage = message;
         }
     }
